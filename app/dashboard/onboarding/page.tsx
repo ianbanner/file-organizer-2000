@@ -115,22 +115,35 @@ export default function OnboardingPage() {
                   <Card
                     key={key}
                     className={twMerge(
-                      "p-4",
+                      "p-4 rounded-xl relative",
                       isLifetime &&
-                        "border-primary scale-105 shadow-lg relative"
+                        "!border-violet-500 !border-[1px] scale-105 shadow-lg"
                     )}
                   >
-                    {isLifetime && (
+                    {isLifetime ? (
                       <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                        <span className="bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-medium">
+                        <span className="bg-violet-100 text-violet-600 px-3 py-1 rounded-full text-sm font-medium">
                           Best Value
                         </span>
                       </div>
+                    ) : (
+                      planKey === "Monthly" && (
+                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                          <span className="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm font-medium">
+                            First month $9 with code ARIGATO
+                          </span>
+                        </div>
+                      )
                     )}
                     <CardHeader>
                       <div className="flex justify-between items-center">
                         <CardTitle>{planKey}</CardTitle>
                         <CardDescription className="text-2xl font-bold">
+                          {planKey === "Yearly" && (
+                            <span className="line-through text-muted-foreground mr-2">
+                              $180
+                            </span>
+                          )}
                           ${price.amount / 100}
                           {price.type === "recurring" && (
                             <span className="text-sm">/{price.interval}</span>
@@ -155,7 +168,11 @@ export default function OnboardingPage() {
                     </CardContent>
                     <CardFooter>
                       <Button
-                        className="w-full mt-3"
+                        className={twMerge(
+                          "w-full mt-3",
+                          isLifetime &&
+                            "bg-violet-600 hover:bg-violet-700 text-white border-none"
+                        )}
                         variant={isLifetime ? "default" : "outline"}
                         onClick={() => handlePlanSelection(planKey)}
                       >
